@@ -37,7 +37,7 @@ sap.ui.define([
             var oView = this.getView();
             var oODataModel = this.getOwnerComponent().getModel();
 
-            // oView.setBusy(true);
+            oView.setBusy(true);
 
             // Execute GET with dual parameters to fetch both 1-to-1 and 1-to-many objects
             oODataModel.read("/Employees(guid'" + sID + "')", {
@@ -71,8 +71,7 @@ sap.ui.define([
             var oView = this.getView();
             var oODataModel = this.getOwnerComponent().getModel();
 
-            // oView.setBusy(true);
-            console.log("Before create");
+            oView.setBusy(true);
             oODataModel.create("/Employees", oPayload, {
                 success: function (oCreatedData) {
                     oView.setBusy(false);
@@ -86,7 +85,6 @@ sap.ui.define([
                     MessageBox.error("Deep Insert execution rejected.");
                 }
             });
-            console.log("After create");
         },
 
         // =========================================================================
@@ -130,7 +128,7 @@ sap.ui.define([
             });
 
             // 4. Submit entire stack inside a single atomic HTTP tunnel network transaction
-            // this.getView().setBusy(true);
+            this.getView().setBusy(true);
             oODataModel.submitChanges({
                 success: function () {
                     this.getView().setBusy(false);
@@ -168,13 +166,20 @@ sap.ui.define([
             oDraftModel.setProperty("/addresses", aAddresses);
         },
 
+        // =========================================================================
+        // ADDED LUI HANDLING ACTIONS
+        // =========================================================================
+        onEdit: function () {
+            this._setMode("edit");
+        },
+
         onSave: function () {
             var oDraftModel = this.getView().getModel("draft");
             if (!oDraftModel) {
                 MessageBox.error("No draft data available to save.");
                 return;
             }
-            console.log("Mode:", this._getMode());
+            
             var oPayload = oDraftModel.getData();
 
             if (this._getMode() === "create") {
@@ -182,13 +187,6 @@ sap.ui.define([
             } else {
                 this._executeBatchUpdate(oPayload);
             }
-        },
-
-        // =========================================================================
-        // ADDED LUI HANDLING ACTIONS
-        // =========================================================================
-        onEdit: function () {
-            this._setMode("edit");
         },
 
         onCancel: function () {
