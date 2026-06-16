@@ -5,7 +5,7 @@
     <Page id="page" title="{i18n>title}" showNavButton="false">
         <content>
             <Panel headerText="Employee Information" expandable="true" expanded="true" >
-                <Table id="employeeTable" inset="false" items="{/Employees}" itemPress="onEmployeeRowPress">
+                <Table id="employeeTable1" inset="false" items="{/Employees}" itemPress="onEmployeeRowPress">
                     <headerToolbar>
                         <Toolbar>
                             <Title text="Existing Employees" level="H4" />

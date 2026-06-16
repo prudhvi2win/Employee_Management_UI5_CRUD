@@ -166,9 +166,36 @@ sap.ui.define([
             oDraftModel.setProperty("/addresses", aAddresses);
         },
 
+        onDelete: function () {
+            var oODataModel = this.getOwnerComponent().getModel();
+            var sID = this._sEmployeeID;
+
+            MessageBox.confirm("Delete this employee record? This cannot be undone.", {
+                onClose: function (sAction) {
+                    if (sAction === MessageBox.Action.OK) {
+                        oODataModel.remove("/Employees(guid'" + sID + "')", {
+                            success: function () {
+                                MessageToast.show("Employee deleted.");
+                                this.getOwnerComponent().getRouter().navTo("TargetMainView", {}, true);
+                            }.bind(this),
+                            error: function () {
+                                MessageBox.error("Delete failed.");
+                            }
+                        });
+                    }
+                }.bind(this)
+            });
+        },
+        
         // =========================================================================
         // ADDED LUI HANDLING ACTIONS
         // =========================================================================
+        onNewEmployee: function () {
+            this._sEmployeeID = null;
+            this._setMode("create");
+            this._initBlankDraft();
+        },
+        
         onEdit: function () {
             this._setMode("edit");
         },
@@ -217,27 +244,6 @@ sap.ui.define([
             oDraftModel.setProperty("/addresses", aAddresses);
         },
 
-        onDelete: function () {
-            var oODataModel = this.getOwnerComponent().getModel();
-            var sID = this._sEmployeeID;
-
-            MessageBox.confirm("Delete this employee record? This cannot be undone.", {
-                onClose: function (sAction) {
-                    if (sAction === MessageBox.Action.OK) {
-                        oODataModel.remove("/Employees(guid'" + sID + "')", {
-                            success: function () {
-                                MessageToast.show("Employee deleted.");
-                                this.getOwnerComponent().getRouter().navTo("TargetMainView", {}, true);
-                            }.bind(this),
-                            error: function () {
-                                MessageBox.error("Delete failed.");
-                            }
-                        });
-                    }
-                }.bind(this)
-            });
-        },
-
         onEmployeeRowPress: function (oEvent) {
             var oItem = oEvent.getParameter("listItem");
             var sID = oItem.getBindingContext().getProperty("ID");
@@ -245,12 +251,6 @@ sap.ui.define([
             this._sEmployeeID = sID;
             this._setMode("view");
             this._loadDeepEmployeeData(sID);
-        },
-
-        onNewEmployee: function () {
-            this._sEmployeeID = null;
-            this._setMode("create");
-            this._initBlankDraft();
         },
 
         // =========================================================================

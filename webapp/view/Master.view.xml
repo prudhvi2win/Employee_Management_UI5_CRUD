@@ -1,0 +1,15 @@
+<mvc:View controllerName="com.emp.employee.controller.Master"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m">
+    <Page title="Employee Workspace" backgroundDesign="List">
+        <content>
+            <List id="navigationList" mode="SingleSelectMaster" selectionChange="onNavigationSelect">
+                <items>
+                    <StandardListItem id="idManage" title="Manage Employees" icon="sap-icon://employee" description="List, View, and Edit Records" />
+                    <StandardListItem id="idLeave" title="Leave Requests" icon="sap-icon://flight" description="Review employee absences" />
+                    <StandardListItem id="idUpload" title="Upload Resumes" icon="sap-icon://attachment" description="Process document attachments" />
+                </items>
+            </List>
+        </content>
+    </Page>
+</mvc:View>

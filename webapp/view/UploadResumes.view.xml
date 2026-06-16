@@ -1,0 +1,10 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:u="sap.ui.unified">
+    <Page title="Resume Processing Portal">
+        <content>
+            <VBox class="sapUiMediumMargin">
+                <u:FileUploader id="fileUploader" uploadUrl="upload/" tooltip="Upload resume files" uploadComplete="handleUploadComplete"/>
+                <Button text="Upload File" press="handleUploadPress"/>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

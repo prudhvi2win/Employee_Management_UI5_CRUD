@@ -1,0 +1,7 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
+    <Page title="Manage Leave Requests">
+        <content>
+            <GenericTile class="sapUiSmallMargin" header="Pending Leaves" subheader="3 Requests Require Action" press="onPress"/>
+            </content>
+    </Page>
+</mvc:View>

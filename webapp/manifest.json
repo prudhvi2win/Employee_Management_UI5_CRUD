@@ -84,7 +84,7 @@
       "config": {
         "routerClass": "sap.m.routing.Router",
         "controlAggregation": "pages",
-        "controlId": "app",
+        "controlId": "idSplitAppControl",
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
@@ -93,17 +93,49 @@
       },
       "routes": [
         {
-          "name": "RouteView1",
-          "pattern": ":?query:",
-          "target": [
-            "TargetView1"
-          ]
+            "name": "EmployeeList",
+            "pattern": "",
+            "target": ["MasterLayoutTarget", "EmployeeListTarget"]
+        },
+        {
+            "name": "EmployeeDetail",
+            "pattern": "EmployeeDetail/{id}",
+            "target": ["MasterLayoutTarget", "EmployeeDetailTarget"]
+        },
+        {
+            "name": "LeaveRequests",
+            "pattern": "Workspace/LeaveRequests",
+            "target": ["MasterLayoutTarget", "LeaveRequestsTarget"]
+        },
+        {
+            "name": "UploadResumes",
+            "pattern": "Workspace/UploadResumes",
+            "target": ["MasterLayoutTarget", "UploadResumesTarget"]
         }
       ],
       "targets": {
-        "TargetView1": {
-          "id": "View1",
-          "name": "View1"
+        "MasterLayoutTarget": {
+            "viewName": "Master",
+            "controlAggregation": "masterPages",
+            "id": "idMasterView"
+        },
+        "EmployeeListTarget": {
+        "viewName": "EmployeeList",
+        "controlAggregation": "detailPages"
+        },
+        "EmployeeDetailTarget": {
+        "viewName": "EmployeeDetail",
+        "controlAggregation": "detailPages"
+        },
+        "LeaveRequestsTarget": {
+            "viewName": "LeaveRequests",
+            "controlAggregation": "detailPages",
+            "id": "idLeaveRequests"
+        },
+        "UploadResumesTarget": {
+            "viewName": "UploadResumes",
+            "controlAggregation": "detailPages",
+            "id": "idUploadResumes"
         }
       }
     },
