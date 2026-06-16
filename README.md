@@ -34,6 +34,19 @@ Employee Management Application
     npm run start-mock
 ```
 
+#### Backend
+
+This project uses a CAP (Cloud Application Programming) server as the backend. The CAP server can be run locally to practice this SAP UI5 project.
+
+To start the CAP server locally:
+
+```
+    cd ../
+    cds watch
+```
+
+The CAP server will be available at `http://localhost:4004` by default.
+
 #### Pre-requisites:
 
 1. Active NodeJS LTS (Long Term Support) version and associated supported NPM version.  (See https://nodejs.org)

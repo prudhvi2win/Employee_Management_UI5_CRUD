@@ -1,0 +1,47 @@
+<mvc:View controllerName="com.emp.employee.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m">
+    <Page id="page" title="{i18n>title}" showNavButton="false">
+        <content>
+            <Panel headerText="Employee Information" expandable="true" expanded="true" >
+                <Table id="employeeTable" inset="false" items="{/Employees}" itemPress="onEmployeeRowPress">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Existing Employees" level="H4" />
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column><Text text="Name" /></Column>
+                        <Column><Text text="Email" /></Column>
+                        <Column><Text text="Department" /></Column>
+                        <Column><Text text="Salary" /></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem type="Navigation">
+                            <cells>
+                                <Text text="{name}" />
+                                <Text text="{email}" />
+                                <Text text="{department}" />
+                                <Text text="{salary}" />
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+            <core:Fragment fragmentName="com.emp.employee.view.fragments.EmployeeForm" type="XML" />
+        </content>
+        <footer>
+            <Bar>
+                <contentRight>
+                    <Button text="New Employee" type="Default" press="onNewEmployee" visible="{= ${viewModel>/mode} === 'view' }" />
+                    <Button text="Create" type="Accept" press="onSave" visible="{= ${viewModel>/mode} === 'create' }" />
+                    <Button text="Save" type="Accept" press="onSave" visible="{= ${viewModel>/mode} === 'edit' }" />
+                    <Button text="Edit" type="Emphasized" press="onEdit" visible="{= ${viewModel>/mode} === 'view' }" />
+                    <Button text="Delete" type="Reject" press="onDelete" visible="{= ${viewModel>/mode} === 'view' }" />
+                    <Button text="Cancel" type="Reject" press="onCancel" visible="{= ${viewModel>/mode} !== 'view' }" />
+                </contentRight>
+            </Bar>
+        </footer>
+    </Page>
+</mvc:View>

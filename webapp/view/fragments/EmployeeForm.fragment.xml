@@ -1,0 +1,76 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns:form="sap.ui.layout.form"
+    xmlns="sap.m">
+
+    <VBox class="sapUiSmallMargin">
+        <form:SimpleForm
+            id="idEmployeeForm"
+            editable="{= ${viewModel>/mode} !== 'view' }"
+            layout="ResponsiveGridLayout"
+            title="General Information"
+            labelSpanL="3" labelSpanM="3" columnsL="1" columnsM="1" emptySpanL="4">
+            <form:content>
+                <core:Title text="Personal Data" />
+                
+                <Label text="Full Name" required="true" />
+                <Input value="{draft>/name}" editable="{= ${viewModel>/mode} !== 'view' }" />
+
+                <Label text="Email Address" required="true" />
+                <Input value="{draft>/email}" type="Email" editable="{= ${viewModel>/mode} !== 'view' }" />
+
+                <Label text="Department" />
+                <Select selectedKey="{draft>/department}" enabled="{= ${viewModel>/mode} !== 'view' }">
+                    <core:Item key="Engineering" text="Engineering" />
+                    <core:Item key="Human Resources" text="Human Resources" />
+                    <core:Item key="Finance" text="Finance" />
+                </Select>
+
+                <Label text="Role" />
+                <Input value="{draft>/role}" editable="{= ${viewModel>/mode} !== 'view' }" />
+
+                <Label text="Salary" />
+                <Input value="{draft>/salary}" type="Number" editable="{= ${viewModel>/mode} !== 'view' }" />
+
+                <core:Title text="Passport Details" />
+                <Label text="Passport Number" />
+                <Input value="{draft>/passportDetail/passportNumber}" editable="{= ${viewModel>/mode} !== 'view' }" />
+                
+                <Label text="Expiry Date" />
+                <DatePicker value="{draft>/passportDetail/expiryDate}" valueFormat="yyyy-MM-dd" displayFormat="long" editable="{= ${viewModel>/mode} !== 'view' }" />
+
+                <Label text="Nationality" />
+                <Input value="{draft>/passportDetail/nationality}" editable="{= ${viewModel>/mode} !== 'view' }" />
+            </form:content>
+        </form:SimpleForm>
+
+        <Table id="idAddressTable" items="{draft>/addresses}" headerText="Addresses (Managed Complex Composition)" class="sapUiMediumMarginTop">
+            <headerToolbar>
+                <OverflowToolbar>
+                    <Title text="Address Directory" />
+                    <ToolbarSpacer />
+                    <Button icon="sap-icon://add" text="Add Address" type="Transparent" press=".onAddAddressRow" visible="{= ${viewModel>/mode} !== 'view' }" />
+                </OverflowToolbar>
+            </headerToolbar>
+            <columns>
+                <Column><Text text="Type" /></Column>
+                <Column><Text text="Street" /></Column>
+                <Column><Text text="City" /></Column>
+                <Column width="5rem" visible="{= ${viewModel>/mode} !== 'view' }"><Text text="Actions" /></Column>
+            </columns>
+            <items>
+                <ColumnListItem>
+                    <cells>
+                        <Select selectedKey="{draft>type}" enabled="{= ${viewModel>/mode} !== 'view' }">
+                            <core:Item key="HOME" text="Home" />
+                            <core:Item key="OFFICE" text="Office" />
+                        </Select>
+                        <Input value="{draft>street}" editable="{= ${viewModel>/mode} !== 'view' }" />
+                        <Input value="{draft>city}" editable="{= ${viewModel>/mode} !== 'view' }" />
+                        <Button icon="sap-icon://delete" type="Reject" press=".onDeleteAddressRow" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </VBox>
+</core:FragmentDefinition>
