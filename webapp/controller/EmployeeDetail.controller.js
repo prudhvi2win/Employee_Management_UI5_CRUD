@@ -2,8 +2,9 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "sap/ui/model/json/JSONModel",
     "sap/m/MessageToast",
-    "sap/m/MessageBox"
-], function (Controller, JSONModel, MessageToast, MessageBox) {
+    "sap/m/MessageBox",
+    "sap/ui/core/Fragment"
+], function (Controller, JSONModel, MessageToast, MessageBox, Fragment) {
     "use strict";
 
     return Controller.extend("com.emp.employee.controller.EmployeeDetail", {
@@ -39,7 +40,7 @@ sap.ui.define([
                 },
                 success: function (oData) {
                     oView.setBusy(false);
-                   if (oData.addresses && oData.addresses.results) {
+                    if (oData.addresses && oData.addresses.results) {
                         oData.addresses = oData.addresses.results;
                     } else {
                         oData.addresses = [];
@@ -136,11 +137,11 @@ sap.ui.define([
             oDraftModel.setProperty("/addresses", aAddresses);
         },
 
-        onEdit: function () { 
-            this._setMode("edit"); 
+        onEdit: function () {
+            this._setMode("edit");
         },
-        onCancel: function () { 
-            this.onNavBack(); 
+        onCancel: function () {
+            this.onNavBack();
         },
         onNavBack: function () {
             this.getOwnerComponent().getRouter().navTo("EmployeeList", {}, true);
@@ -153,6 +154,91 @@ sap.ui.define([
             }), "draft");
         },
         _setMode: function (sMode) { this.getView().getModel("viewModel").setProperty("/mode", sMode); },
-        _getMode: function () { return this.getView().getModel("viewModel").getProperty("/mode"); }
+        _getMode: function () { return this.getView().getModel("viewModel").getProperty("/mode"); },
+
+        onCountryVH: function (oEvent) {
+            this._openCountryDialog(oEvent.getSource());
+        },
+
+        onNationalityValueHelp: function (oEvent) {
+            this._openCountryDialog(oEvent.getSource());
+        },
+
+        _openCountryDialog: function (oSourceControl) {
+            this._oValueHelpInput = oSourceControl;
+
+            if (this._oCountrySelectDialog) {
+                this._oCountrySelectDialog.open();
+                return;
+            }
+
+            Fragment.load({
+                id: this.getView().getId(),
+                name: "com.emp.employee.view.fragments.CountryF4Help",
+                controller: this
+            }).then(function (oDialog) {
+                this._oCountrySelectDialog = oDialog;
+                this.getView().addDependent(oDialog);
+                oDialog.open();
+            }.bind(this));
+        },
+
+        onCountryF4Close: function () {
+            if (this._oCountrySelectDialog) {
+                this._oCountrySelectDialog.close();
+            }
+        },
+
+        onCountrySelect: function (oEvent) {
+            var sCountry = oEvent.getSource().getBindingContext().getProperty("name");
+
+            if (this._oValueHelpInput) {
+                this._oValueHelpInput.setValue(sCountry);
+            }
+
+            this._oCountrySelectDialog.close();
+        },
+
+        onPromoteEmployee: function () {
+            var oDraftModel = this.getView().getModel("draft");
+            if (!oDraftModel) {
+                MessageBox.error("No employee data available for promotion.");
+                return;
+            }
+
+            var oPayload = oDraftModel.getData();
+            if (!oPayload.ID) {
+                MessageBox.error("Please save the employee before promoting.");
+                return;
+            }
+
+            var sNewRole = oPayload.role ? oPayload.role + " Senior" : "Senior";
+            var nSalaryIncrement = 9999.00;
+            var oModel = this.getOwnerComponent().getModel();
+            var oView = this.getView();
+
+            oView.setBusy(true);
+
+            oModel.callFunction("/EmployeeService/promoteEmployee", {
+                method: "POST",
+                urlParameters: {
+                    employeeId: oPayload.ID,
+                    newRole: sNewRole,
+                    salaryIncrement: nSalaryIncrement
+                },
+                success: function (oData) {
+                    oView.setBusy(false);
+                    if (oData) {
+                        oDraftModel.setData(oData);
+                    }
+                    MessageToast.show("Employee promoted to " + sNewRole + ".");
+                    this._setMode("view");
+                }.bind(this),
+                error: function (oError) {
+                    oView.setBusy(false);
+                    MessageBox.error("Promotion failed: " + oError.message);
+                }
+            });
+        }
     });
 });

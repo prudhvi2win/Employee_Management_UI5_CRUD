@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.ui.layout.form">
+    <Dialog id="idCuntF4HelpDialog" title="Select Country">
+        <content>
+               <Table id="idCountryResultsTable" items="{/Country}" noDataText="No Country Found.">
+                <columns>
+                    <Column><Text text="Country Code" /></Column>
+                    <Column><Text text="Country Name" /></Column>
+                    <Column><Text text="Region" /></Column>
+                </columns>
+                <items>
+                    <ColumnListItem type="Active" press=".onCountrySelect">
+                        <cells>
+                            <Text text="{code}" />
+                            <Text text="{name}" />
+                            <Text text="{region}" />
+                        </cells>
+                    </ColumnListItem>
+                </items>
+            </Table>     
+        </content>
+        <endButton>
+            <Button text="Close" press=".onCountryF4Close" />  
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

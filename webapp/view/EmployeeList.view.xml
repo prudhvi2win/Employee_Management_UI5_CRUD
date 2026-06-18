@@ -1,37 +1,54 @@
 <mvc:View controllerName="com.emp.employee.controller.EmployeeList"
     xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page title="Manage Employees">
-        <content>
-            <Table id="employeeTable" 
-                   inset="false" 
-                   items="{path: '/Employees'}" 
-                   mode="SingleSelectMaster"
-                   itemPress="onEmployeeRowPress">
-                <headerToolbar>
-                    <OverflowToolbar>
-                        <Title text="Existing Employees" level="H4" />
-                        <ToolbarSpacer />
-                        <Button icon="sap-icon://add" text="New Employee" type="Emphasized" press="onNewEmployee" />
-                    </OverflowToolbar>
-                </headerToolbar>
-                <columns>
-                    <Column><Text text="Name" /></Column>
-                    <Column><Text text="Email" /></Column>
-                    <Column><Text text="Department" /></Column>
-                    <Column width="8rem"><Text text="Salary" /></Column>
-                </columns>
-                <items>
-                    <ColumnListItem type="Navigation">
-                        <cells>
-                            <Text text="{name}" />
-                            <Text text="{email}" />
-                            <Text text="{department}" />
-                            <Text text="{salary}" />
-                        </cells>
-                    </ColumnListItem>
-                </items>
-            </Table>
-        </content>
-    </Page>
+    xmlns="sap.m" 
+    xmlns:sfb="sap.ui.comp.smartfilterbar" 
+    xmlns:smarttable="sap.ui.comp.smarttable" 
+    class="sapUiSizeCompact"
+    xmlns:core="sap.ui.core"
+    xmlns:f="sap.f"
+    xmlns:sv="sap.ui.comp.smartvariants">
+    <sfb:SmartFilterBar id="smartFilterBar" 
+                        entitySet="Employees" 
+                        persistencyKey="employeeFilterKey"
+                        enableBasicSearch="true"
+                        search="onSearch"
+                        liveMode="false"
+                        basicSearchFieldName="name">        
+        <sfb:controlConfiguration>
+            <sfb:ControlConfiguration key="department"
+                                       label="Department"
+                                       visibleInAdvancedArea="true" 
+                                       hasValueHelpDialog="true"/>
+            <sfb:ControlConfiguration key="salary"
+                                       label="Salary"
+                                       visibleInAdvancedArea="true"/>
+        </sfb:controlConfiguration>
+    </sfb:SmartFilterBar>
+    
+    <smarttable:SmartTable id="employeeSmartTable"
+                            entitySet="Employees"
+                            smartFilterId="smartFilterBar"
+                            tableType="ResponsiveTable"
+                            header="Employees Data"
+                            showRowCount="true"
+                            useVariantManagement="true"
+                            persistencyKey="employeeSmartTableKey"
+                            enableAutoBinding="true"
+                            editTogglable="false"
+                            initiallyVisibleFields="name,department,email,salary,role"> 
+        <smarttable:customToolbar>
+            <OverflowToolbar>
+                <ToolbarSpacer />
+                <Button icon="sap-icon://add" text="New Employee" type="Emphasized" press="onNewEmployee" />
+                <layoutData>
+                    <FlexItemData growFactor="1" baseSize="0%"/>
+                </layoutData>
+            </OverflowToolbar>
+        </smarttable:customToolbar>
+        <Table itemPress="onEmployeeRowPress">
+            <items>
+                <ColumnListItem type="Navigation" />
+            </items>
+        </Table>
+    </smarttable:SmartTable>
 </mvc:View>
